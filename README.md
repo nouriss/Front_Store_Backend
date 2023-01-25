@@ -89,7 +89,7 @@ TEST_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJmaXJzdG5h
 ## Start App
 `yarn watch` or `npm run watch`
 
-!['start server'](./docs/screenshots/server_up.png.png)
+!['server up '](docs/screenshots/server_up.png.png)
 
 ### Running Ports 
 After start up, the server will start on port `3000` and the database on port `5432`
