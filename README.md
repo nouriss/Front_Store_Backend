@@ -49,7 +49,7 @@ The following packages were installed.
 ## Set up Database
 ### Create Databases
 
-In this project containerised Postgres database is used. To connect to the data base run the following 
+In this project a containerized Postgres database is used. To connect to the data base run the following 
 command in the project root directory:
 
 `docker-compose -f docker-compose.yml up`
@@ -112,5 +112,5 @@ It sets the environment variable `ENV` to `test`, migrates up tables for the tes
 
 !['test 1'](docs/screenshots/jasmine_test_output.png)
 
-**NB:** If the rollback of the test database isn't executes at the end of the test, make sure to call `yarn test-down` to make sure it done.
+**NB:** If the rollback of the test database isn't executed at the end of the test, make sure to call `yarn test-down` to make sure it done.
  
