@@ -50,7 +50,7 @@ These are the notes from a meeting with the frontend developer that describe wha
         - A SHOW route: 'users/:id' [GET] 
             - [x] Authoratization: bearer<JWT>
 
-- Create N[token required]
+- Create N[]
     * create a users
         -  A CREATE route: 'users/' [POST]
             - [x] body : {
@@ -58,7 +58,17 @@ These are the notes from a meeting with the frontend developer that describe wha
                             "lastname": "zidane zizou",
                             "password": "worldCup98", 
                          } 
-            - [x] Authoratization: bearer<JWT>
+            
+
+- Authenticate N[token required]
+    * create a users
+        -  AN AUTH route: 'users/auth' [POST]
+            - [x] body : {
+                            "firstname": "zainedin",
+                            "lastname": "zidane zizou",
+                            "password": "worldCup98", 
+                         } 
+
 - update N[token required]
     * update a users
         -  A CREATE route: 'users/' [PUT]

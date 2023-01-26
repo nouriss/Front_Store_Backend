@@ -165,28 +165,43 @@ var destroy = function (req, res) { return __awaiter(void 0, void 0, void 0, fun
         }
     });
 }); };
-// const authenticate = async (req: Request, res: Response) => {
-//     const u: UserType = {
-//         firstname: req.body.firstname,
-//         lastname: req.body.lasname,
-//         password: req.body.password,
-//     }
-//     console.log(`authenticate user: ${u}`)
-//     try {
-//         const user = await store.authenticate(u.firstname, u.lastname, u.password)
-//         //@ts-ignore
-//         let token = jwt.sign({ user: user }, (process.env.TOKEN_SECRET));
-//         res.json({user, token})
-//     } catch(error) {
-//         res.status(401)
-//         res.json({ error })
-//     }
-// }
+var authenticate = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var u, user, token, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                u = {
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    password: req.body.password
+                };
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, store.authenticate(u.firstname, u.lastname, u.password)];
+            case 2:
+                user = _a.sent();
+                if (user === null) {
+                    throw new Error(" Authentification failure for user ".concat(u.firstname, " ").concat(u.lastname));
+                }
+                token = jsonwebtoken_1["default"].sign({ user: user }, (process.env.TOKEN_SECRET));
+                res.json({ user: user, token: token });
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _a.sent();
+                res.status(401);
+                res.json("".concat(error_1));
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };
 var userRoutes = function (app) {
     app.get('/users', authenticate_1.verifyAuthToken, index);
     app.get('/users/:id', authenticate_1.verifyAuthToken, show);
     app.put('/users/:id', authenticate_1.verifyAuthToken, update);
-    app.post('/users', authenticate_1.verifyAuthToken, create);
+    app.post('/users', create);
+    app.post('/users/auth', authenticate);
     app["delete"]('/users/:id', authenticate_1.verifyAuthToken, destroy);
 };
 exports["default"] = userRoutes;

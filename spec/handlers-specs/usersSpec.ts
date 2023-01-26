@@ -28,7 +28,6 @@ fdescribe('Test endpoint responses for user handler ', () => {
     const response = await request
       .post('/users')
       .set('Content-type', 'application/json')
-      .set('Authorization', 'Bearer ' + `${process.env.TEST_TOKEN}`)
       .send(query);
 
     // console.log(`Endpoint Test create user:: keys: ${Object.keys(response.body)}`)
@@ -56,7 +55,7 @@ fdescribe('Test endpoint responses for user handler ', () => {
     // done();
   });
 
-  it('Check invalid api endpoint request index', async () => {
+  it('Check valid api endpoint request index', async () => {
     const response = await request
       .get('/users')
       .set('Content-type', 'application/json')
@@ -67,7 +66,7 @@ fdescribe('Test endpoint responses for user handler ', () => {
     // done();
   });
 
-  it('Check invalid api endpoint request show', async () => {
+  it('Check valid api endpoint request show', async () => {
     const response = await request
       .get(`/users/${resQuery.id}`)
       .set('Content-type', 'application/json')
@@ -83,7 +82,35 @@ fdescribe('Test endpoint responses for user handler ', () => {
     // done();
   });
 
-  it('Check invalid api endpoint request update', async () => {
+  it(' Check valid api endpoint request authentification', async () => {
+    const response = await request
+      .post('/users/auth')
+      .set('Content-type', 'application/json')
+      .send(query);
+
+    // console.log(`Endpoint Test create user:: keys: ${Object.keys(response.body)}`)
+    // console.log(`Endpoint Test create user::newUser values: ${response.body.newUser}`)
+    // console.log(`Endpoint Test create user::token values: ${response.body.token}`)
+
+    
+    const token = jwt.sign(
+      { user: response.body.user },
+      // @ts-ignore
+      process.env.TOKEN_SECRET
+    );
+    expect(response.status).toBe(200);
+    expect(response.body.user.firstname).toEqual(query.firstname);
+    expect(response.body.user.lastname).toEqual(query.lastname);
+    expect(response.body.token).toEqual(token);
+    expect(
+      bcrypt.compareSync(
+        query.password + pepper,
+        response.body.user.password_digest
+      )
+    ).toBeTrue();
+  })
+
+  it('Check valid api endpoint request update', async () => {
     const queryUpdate: UserType = query;
     queryUpdate.firstname = 'leo';
     queryUpdate.firstname = 'messi';

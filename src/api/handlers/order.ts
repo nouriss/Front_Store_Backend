@@ -189,11 +189,11 @@ const getUserActiveOrder = async (req: Request, res: Response) => {
 };
 
 const orderRoutes = (app: express.Application) => {
-  app.get('/orders', index);
-  app.get('/orders/:id', show);
+  app.get('/orders', verifyAuthToken, index);
+  app.get('/orders/:id', verifyAuthToken, show);
   app.post('/orders', verifyAuthToken, create);
   app.put('/orders/:id', verifyAuthToken, update);
-  app.delete('/orders/:id', destroy);
+  app.delete('/orders/:id', verifyAuthToken, destroy);
   // add product
   app.post('/orders/:id/products', verifyAuthToken, addProduct);
   // get user active order

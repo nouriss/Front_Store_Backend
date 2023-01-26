@@ -203,7 +203,6 @@ var UserStore = /** @class */ (function () {
                         //console.log(password + pepper);
                         if (result.rows.length) {
                             user = result.rows[0];
-                            console.log(user);
                             if (bcrypt_1["default"].compareSync(password + pepper, user.password_digest)) {
                                 return [2 /*return*/, user];
                             }

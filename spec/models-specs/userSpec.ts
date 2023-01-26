@@ -57,9 +57,9 @@ fdescribe('User Model', () => {
 
   beforeAll(async () => {
     resUser = await store.create(user);
-    console.log(` TEST User Model:: before all user ${Object.values(user)} `);
+    console.log(` TEST User Model:: before all user ${JSON.stringify(user)} `);
     console.log(
-      ` TEST User Model:: before all resUser ${Object.values(resUser)} `
+      ` TEST User Model:: before all resUser ${JSON.stringify(resUser)} `
     );
     // //@ts-ignore
     // let token = jwt.sign({ user: user }, process.env.TOKEN_SECRET);
@@ -88,6 +88,27 @@ fdescribe('User Model', () => {
     ).toBeTrue();
   });
 
+  it('authenticate method should return correct user', async () => {
+
+    const result  = await store.authenticate(user.firstname, user.lastname, user.password);
+    console.log(` TEST User Model:: authenticate result ${JSON.stringify(result)} `);
+    console.log(
+      ` TEST User Model:: before all user ${JSON.stringify(user)} `
+    );
+    // //@ts-ignore
+    // let token = jwt.sign({ user: user }, process.env.TOKEN_SECRET);
+    expect(result).toBeTruthy()
+    //@ts-ignore
+    expect(result.firstname).toEqual(user.firstname);
+    //@ts-ignore
+    expect(result.lastname).toEqual(user.lastname);
+
+    expect(
+      //@ts-ignore
+      bcrypt.compareSync(user.password + pepper, result.password_digest)
+    ).toBeTrue();
+  })
+
   it('update method should return the correct user', async () => {
     userAuth = {
       id: resUser.id,
@@ -103,7 +124,7 @@ fdescribe('User Model', () => {
     };
 
     const result = await store.update(userAuth);
-    console.log(` TEST user update  ${Object.values(result)} `);
+    console.log(` TEST user update  ${JSON.stringify(result)} `);
     expect(result.id).toEqual(userAuth.id);
     expect(result.firstname).toEqual(userAuth.firstname);
     expect(result.lastname).toEqual(userAuth.lastname);
@@ -115,7 +136,7 @@ fdescribe('User Model', () => {
 
   afterAll(async () => {
     const delResult = await store.delete(resUser.id);
-    console.log(` TEST user update  ${Object.values(delResult)} `);
+    console.log(` TEST user update  ${JSON.stringify(delResult)} `);
 
     expect(delResult.id).toEqual(resUser.id);
     expect(delResult.firstname).toEqual(resUser.firstname);

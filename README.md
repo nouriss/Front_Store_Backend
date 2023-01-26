@@ -102,6 +102,9 @@ Tokens are passed along with the http header as
 ```
 Authorization   Bearer <token>
 ```
+**NB:** There're two ways to generate a JWT token for a user:
+  - [ x ] Create a new user refering to  `A CREATE route: 'users/' [POST]`
+  - [ x ] Authenticate a user with his credentials refering to  `AN AUTH route: 'users/auth' [POST]`  
 
 ## Testing
 Run test with 

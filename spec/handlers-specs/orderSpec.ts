@@ -106,7 +106,10 @@ beforeAll(async () => {
 
 fdescribe('Test endpoint responses for order handler ', () => {
   it('Check invalid api endpoint request index', async () => {
-    const response = await request.get('/orders');
+    const response = await request
+      .get('/orders')
+      .set('Content-type', 'application/json')
+      .set('Authorization', 'Bearer ' + `${process.env.TEST_TOKEN}`);
 
     expect(response.status).toBe(200);
     expect(response.body).not.toEqual([]);
@@ -115,7 +118,10 @@ fdescribe('Test endpoint responses for order handler ', () => {
 
   it('Check invalid api endpoint request show', async () => {
     console.log(` show resQuery.id :: ${resQuery.id}`);
-    const response = await request.get(`/orders/${resQuery.id}`);
+    const response = await request
+      .get(`/orders/${resQuery.id}`)
+      .set('Content-type', 'application/json')
+      .set('Authorization', 'Bearer ' + `${process.env.TEST_TOKEN}`);
 
     expect(response.status).toBe(200);
     expect(parseInt(`${response.body.user_id}`)).toEqual(query.user_id);

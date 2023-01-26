@@ -77,29 +77,32 @@ const destroy = async (req: Request, res: Response) => {
   }
 };
 
-// const authenticate = async (req: Request, res: Response) => {
-//     const u: UserType = {
-//         firstname: req.body.firstname,
-//         lastname: req.body.lasname,
-//         password: req.body.password,
-//     }
-//     console.log(`authenticate user: ${u}`)
-//     try {
-//         const user = await store.authenticate(u.firstname, u.lastname, u.password)
-//         //@ts-ignore
-//         let token = jwt.sign({ user: user }, (process.env.TOKEN_SECRET));
-//         res.json({user, token})
-//     } catch(error) {
-//         res.status(401)
-//         res.json({ error })
-//     }
-// }
+const authenticate = async (req: Request, res: Response) => {
+    const u: UserType = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        password: req.body.password,
+    }
+    try {
+        const user = await store.authenticate(u.firstname, u.lastname, u.password)
+        if(user === null){
+          throw new Error(` Authentification failure for user ${u.firstname} ${u.lastname}`)
+        }
+        //@ts-ignore
+        const token = jwt.sign({ user: user }, (process.env.TOKEN_SECRET));
+        res.json({user, token})
+    } catch(error) {
+        res.status(401)
+        res.json(`${error}`)
+    }
+}
 
 const userRoutes = (app: express.Application) => {
   app.get('/users', verifyAuthToken, index);
   app.get('/users/:id', verifyAuthToken, show);
   app.put('/users/:id', verifyAuthToken, update);
-  app.post('/users', verifyAuthToken, create);
+  app.post('/users', create);
+  app.post('/users/auth', authenticate);
   app.delete('/users/:id', verifyAuthToken, destroy);
 };
 
